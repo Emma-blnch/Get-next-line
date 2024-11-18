@@ -1,0 +1,1 @@
+Ceci est une ligne extrêmement longue qui dépasse largement la taille du buffer pour tester la gestion des cas où une ligne complète ne peut pas être lue en une seule fois.
