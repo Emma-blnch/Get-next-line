@@ -1,41 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
+/*   Updated: 2024/11/18 15:54:40 by eblancha         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+static int	check_errors(int fd, char **remainder)
 {
-	static char	*remainder; // Stocke les données résiduelles
-	char	buffer[BUFFER_SIZE + 1]; // Tampon pour les données lues
-	char	*line; // Contient la ligne a retourner
-	char	*temp;
-	char	*newline_pos;
-	int		bytes_read; // Nombre d’octets lus
-
-	line = NULL;
 	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	if (!remainder)
-		remainder = ft_strdup("");
-	while (!ft_strchr(remainder, '\n') && (bytes_read = read(fd, buffer, BUFFER_SIZE)))
-	{
-		buffer[bytes_read] = '\0';
-		temp = remainder;
-		remainder = ft_strjoin(remainder, buffer);
-		free(temp);
-	}
-	if (bytes_read <= 0 || (!remainder || *remainder == '\0'))
-		return (NULL);
-	newline_pos = ft_strchr(remainder, '\n');
+		return (0);
+	if (!*remainder)
+		*remainder = ft_strdup("");
+	return (*remainder != NULL);
+}
+
+static int	read_update_remainder(int fd, char **remainder)
+{
+	char	buffer[BUFFER_SIZE + 1];
+	char	*temp;
+	int		bytes_read;
+
+	while (!ft_strchr(remainder, '\n') && (bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+        {
+                buffer[bytes_read] = '\0';
+                temp = *remainder;
+                *remainder = ft_strjoin(*remainder, buffer);
+                free(temp);
+		if (!*remainder)
+			return (-1);
+        }
+	return (bytes_read);
+}
+
+static char	*extract_line(char **remainder);
+{
+	char	*newline_pos;
+	char	*line;
+	char	*temp;
+
+	newline_pose = ft_strchr(*remainder, '\n');
 	if (newline_pos)
 	{
-		line = ft_substr(remainder, 0, newline_pos - remainder + 1);
-		temp = remainder;
-		remainder = ft_substr(remainder, newline_pos - remainder + 1, ft_strlen(remainder));
+		line = ft_substr(remainder, 0, newline_pos - *remainder + 1);
+		temp = *remainder;
+		*remainder = ft_substr(*remainder, newline_pos - *remainder + 1, ft_strlen(*remainder));
 		free (temp);
 	}
 	else
 	{
-		line = ft_strdup(remainder);
-		free (remainder);
-		remainder = NULL;
-	}
+		line = ft_strdup(*remainder);
+		free (*remainder);
+		*remainder = NULL;
+        }
+        return (line);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*remainder; // Stocke les données résiduelles
+	char	*line; // Contient la ligne a retourner
+	int		bytes_read; // Nombre d’octets lus
+
+	if (!check_errors(fd, &remainder))
+		return (NULL);
+	bytes_read = read_update_remainder(fd, &remainder);
+	if (bytes_read <= 0 || (!remainder || *remainder == '\0'))
+		return (NULL);
+	line = extract_line(&remainder);
 	return (line);
 }
