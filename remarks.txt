@@ -1,2 +1,1 @@
-
-timeout on all tests but it works
+first tests ok mais quelques segmentation fault/leaks

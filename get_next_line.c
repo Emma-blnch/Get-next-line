@@ -27,7 +27,7 @@ static int	read_update_remainder(int fd, char **remainder)
 	char	*temp;
 	int		bytes_read;
 
-	while (!ft_strchr(remainder, '\n') && (bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while (!ft_strchr(*remainder, '\n') && (bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
         {
                 buffer[bytes_read] = '\0';
                 temp = *remainder;
@@ -39,16 +39,16 @@ static int	read_update_remainder(int fd, char **remainder)
 	return (bytes_read);
 }
 
-static char	*extract_line(char **remainder);
+static char	*extract_line(char **remainder)
 {
 	char	*newline_pos;
 	char	*line;
 	char	*temp;
 
-	newline_pose = ft_strchr(*remainder, '\n');
+	newline_pos = ft_strchr(*remainder, '\n');
 	if (newline_pos)
 	{
-		line = ft_substr(remainder, 0, newline_pos - *remainder + 1);
+		line = ft_substr(*remainder, 0, newline_pos - *remainder + 1);
 		temp = *remainder;
 		*remainder = ft_substr(*remainder, newline_pos - *remainder + 1, ft_strlen(*remainder));
 		free (temp);
