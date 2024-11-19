@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/19 12:49:06 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/19 13:46:07 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,13 @@ char	*get_next_line(int fd)
 	if (!check_errors(fd, &remainder))
 		return (NULL);
 	bytes_read = read_update_remainder(fd, &remainder);
-	if (bytes_read <= 0 || (!remainder || *remainder == '\0'))
+	if (bytes_read <= 0 || (!remainder || *remainder == '\0')
+		|| bytes_read == -1)
+	{
+		free(remainder);
+		remainder = NULL;
 		return (NULL);
+	}
 	line = extract_line(&remainder);
 	return (line);
 }
