@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/18 15:54:40 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:49:06 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,16 @@ static int	read_update_remainder(int fd, char **remainder)
 	char	*temp;
 	int		bytes_read;
 
-	while (!ft_strchr(*remainder, '\n') && (bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
-        {
-                buffer[bytes_read] = '\0';
-                temp = *remainder;
-                *remainder = ft_strjoin(*remainder, buffer);
-                free(temp);
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	while (!ft_strchr(*remainder, '\n') && (bytes_read > 0))
+	{
+		buffer[bytes_read] = '\0';
+		temp = *remainder;
+		*remainder = ft_strjoin(*remainder, buffer);
+		free(temp);
 		if (!*remainder)
 			return (-1);
-        }
+	}
 	return (bytes_read);
 }
 
@@ -50,7 +51,8 @@ static char	*extract_line(char **remainder)
 	{
 		line = ft_substr(*remainder, 0, newline_pos - *remainder + 1);
 		temp = *remainder;
-		*remainder = ft_substr(*remainder, newline_pos - *remainder + 1, ft_strlen(*remainder));
+		*remainder = ft_substr(*remainder, newline_pos - *remainder + 1,
+				ft_strlen(*remainder));
 		free (temp);
 	}
 	else
@@ -58,15 +60,15 @@ static char	*extract_line(char **remainder)
 		line = ft_strdup(*remainder);
 		free (*remainder);
 		*remainder = NULL;
-        }
-        return (line);
+	}
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder; // Stocke les données résiduelles
-	char	*line; // Contient la ligne a retourner
-	int		bytes_read; // Nombre d’octets lus
+	static char	*remainder;
+	char		*line;
+	int			bytes_read;
 
 	if (!check_errors(fd, &remainder))
 		return (NULL);

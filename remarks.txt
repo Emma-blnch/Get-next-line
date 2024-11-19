@@ -1,1 +1,1 @@
-first tests ok mais quelques segmentation fault/leaks
+few tests ok but mostly timeout (especially when no newline) and some overflow and leaks
