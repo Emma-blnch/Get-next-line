@@ -1,4 +1,6 @@
-few tests ok but mostly timeout (especially when no newline) and some overflow and leaks
+few tests ok but mostly timeout (especially when big line)
+
+leaks taken care of
 
 -> tests not ok when buffer_size inferior to number of char in .txt
 -> en gros il galere quand il y a une trop longue ligne a trouver le \n
