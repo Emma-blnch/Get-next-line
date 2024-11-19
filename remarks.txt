@@ -1,7 +1,4 @@
-few tests ok but mostly timeout (especially when big line)
-
-leaks taken care of
-
--> tests not ok when buffer_size inferior to number of char in .txt
--> en gros il galere quand il y a une trop longue ligne a trouver le \n
-ou quand la buffer size est vraiment petite il galere a mettre juste les preniers char
+- tests ok
+- bonus to do
+-> les faire en mode liste chainees
+- check norminette et francinette a l'ecole
