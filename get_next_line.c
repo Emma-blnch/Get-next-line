@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/19 13:46:07 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:19:50 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	check_errors(int fd, char **remainder)
 		return (0);
 	if (!*remainder)
 		*remainder = ft_strdup("");
-	return (*remainder != NULL);
+	return (1);
 }
 
 static int	read_update_remainder(int fd, char **remainder)
@@ -70,7 +70,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			bytes_read;
 
-	if (!check_errors(fd, &remainder))
+	if (check_errors(fd, &remainder) != 1)
 		return (NULL);
 	bytes_read = read_update_remainder(fd, &remainder);
 	if (bytes_read <= 0 || (!remainder || *remainder == '\0')
