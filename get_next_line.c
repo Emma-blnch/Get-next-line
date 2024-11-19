@@ -27,9 +27,13 @@ static int	read_update_remainder(int fd, char **remainder)
 	char	*temp;
 	int		bytes_read;
 
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (!ft_strchr(*remainder, '\n') && (bytes_read > 0))
+	while (!ft_strchr(*remainder, '\n'))
 	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1) //si read échoue
+			return (-1);
+		if (bytes_read == 0) //fin du fichier
+			break ;
 		buffer[bytes_read] = '\0';
 		temp = *remainder;
 		*remainder = ft_strjoin(*remainder, buffer);
@@ -73,8 +77,13 @@ char	*get_next_line(int fd)
 	if (check_errors(fd, &remainder) != 1)
 		return (NULL);
 	bytes_read = read_update_remainder(fd, &remainder);
-	if (bytes_read <= 0 || (!remainder || *remainder == '\0')
-		|| bytes_read == -1)
+	if (bytes_read == -1)
+	{
+		free(remainder);
+		remainder = NULL;
+		return (NULL);
+	}
+	if (bytes_read == 0 && (!remainder || *remainder == '\0'))
 	{
 		free(remainder);
 		remainder = NULL;
