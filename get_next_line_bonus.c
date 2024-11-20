@@ -36,7 +36,7 @@ static int	read_update_remainder(int fd, char **remainder)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
 		{
-			free(buffer)
+			free(buffer);
 			return (-1);
 		}
 		if (bytes_read == 0)
