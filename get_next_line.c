@@ -23,7 +23,6 @@ static int	check_errors(int fd, char **remainder)
 
 static int	read_update_remainder(int fd, char **remainder)
 {
-	//char	buffer[BUFFER_SIZE + 1];
 	char	*buffer;
 	char	*temp;
 	int		bytes_read;
@@ -36,7 +35,10 @@ static int	read_update_remainder(int fd, char **remainder)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
+		{
+			free(buffer);
 			return (-1);
+		}
 		if (bytes_read == 0)
 			break ;
 		buffer[bytes_read] = '\0';
