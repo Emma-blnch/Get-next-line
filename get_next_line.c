@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/19 14:19:50 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/20 09:59:29 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,15 @@ static int	check_errors(int fd, char **remainder)
 
 static int	read_update_remainder(int fd, char **remainder)
 {
-	char	buffer[BUFFER_SIZE + 1];
+	//char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	char	*temp;
 	int		bytes_read;
 
 	bytes_read = 0;
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (-1);
 	while (!ft_strchr(*remainder, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
@@ -42,6 +46,7 @@ static int	read_update_remainder(int fd, char **remainder)
 		if (!*remainder)
 			return (-1);
 	}
+	free(buffer);
 	return (bytes_read);
 }
 

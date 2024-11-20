@@ -1,4 +1,4 @@
 - tests ok
+-> malloc donc marche avec toutes buffer size MAIS quelques leaks
 - bonus to do
 -> les faire en mode liste chainees
-- check norminette et francinette a l'ecole
