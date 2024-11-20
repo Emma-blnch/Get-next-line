@@ -12,6 +12,8 @@
 
 #include "get_next_line.h"
 
+#include "get_next_line.h"
+
 size_t	ft_strlen(char *s)
 {
 	int	i;
@@ -30,10 +32,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	j;
 	char	*result;
 
+	if (!s1 && !s2)
+		return (ft_strdup(""));
 	if (!s1)
-		s1 = "";
+		return (ft_strdup(s2));
 	if (!s2)
-		s2 = "";
+		return (ft_strdup(s1));
+
 	i = 0;
 	j = 0;
 	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
@@ -62,7 +67,13 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
-		return (ft_strdup(""));
+	{
+		pointer = malloc(sizeof(char));
+		if (!pointer)
+			return (NULL);
+		pointer[0] = '\0';
+		return (pointer);
+	}
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
 	pointer = malloc(sizeof(char) * len + 1);
@@ -101,7 +112,13 @@ char	*ft_strdup(char *s)
 	char	*dup;
 
 	if (!s)
-		return (ft_strdup(""));
+	{
+		dup = malloc(sizeof(char));
+		if (!dup)
+			return (NULL);
+		dup[0] = '\0';
+		return (dup);
+	}
 	i = 0;
 	dup = malloc(sizeof(char) * (ft_strlen(s) + 1));
 	if (!dup)
