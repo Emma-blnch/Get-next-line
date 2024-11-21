@@ -6,12 +6,12 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/18 15:54:40 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:14:51 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_BONUS_H
-# define GET_NEXT_LINE_BONUS_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
 # include <unistd.h>
 # include <fcntl.h>

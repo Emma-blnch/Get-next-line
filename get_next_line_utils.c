@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:52:43 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/18 15:54:19 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:15:02 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (ft_strdup(s2));
 	if (!s2)
 		return (ft_strdup(s1));
-
 	i = 0;
 	j = 0;
 	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
