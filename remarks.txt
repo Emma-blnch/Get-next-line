@@ -1,1 +1,3 @@
 check commnt remplacer strdup dans get next line de base
+
+faire readme.md pour expliauer projet sur github
