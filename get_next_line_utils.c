@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:52:43 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 10:15:02 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:14:01 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,17 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
+char	*allocate_string(size_t size)
+{
+	char	*result;
+
+	result = malloc(sizeof(char) * (size + 1));
+	if (!result)
+		return (NULL);
+	result[size] = '\0';
+	return (result);
+}
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
@@ -31,11 +42,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*result;
 
 	if (!s1 && !s2)
-		return (ft_strdup(""));
-	if (!s1)
-		return (ft_strdup(s2));
-	if (!s2)
-		return (ft_strdup(s1));
+		return (allocate_string(0));
 	i = 0;
 	j = 0;
 	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
@@ -64,13 +71,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	if (!s)
 		return (NULL);
 	if (start >= ft_strlen(s))
-	{
-		pointer = malloc(sizeof(char));
-		if (!pointer)
-			return (NULL);
-		pointer[0] = '\0';
-		return (pointer);
-	}
+		return (allocate_string(0));
 	if (len > ft_strlen(s) - start)
 		len = ft_strlen(s) - start;
 	pointer = malloc(sizeof(char) * len + 1);
@@ -101,30 +102,4 @@ char	*ft_strchr(const char *s, int c)
 	if (s[i] == (char)c)
 		return ((char *)(s + i));
 	return (NULL);
-}
-
-char	*ft_strdup(char *s)
-{
-	size_t	i;
-	char	*dup;
-
-	if (!s)
-	{
-		dup = malloc(sizeof(char));
-		if (!dup)
-			return (NULL);
-		dup[0] = '\0';
-		return (dup);
-	}
-	i = 0;
-	dup = malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (!dup)
-		return (NULL);
-	while (s[i])
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
 }

@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/20 12:20:45 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:16:19 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_errors(int fd, char **remainder)
 	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!remainder[fd])
-		remainder[fd] = ft_strdup("");
+		remainder[fd] = allocate_string(0);
 	return (1);
 }
 
@@ -34,13 +34,11 @@ static int	read_update_remainder(int fd, char **remainder)
 	while (!ft_strchr(remainder[fd], '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
+		if (bytes_read <= 0)
 		{
 			free(buffer);
-			return (-1);
+			return (0);
 		}
-		if (bytes_read == 0)
-			break ;
 		buffer[bytes_read] = '\0';
 		temp = remainder[fd];
 		remainder[fd] = ft_strjoin(remainder[fd], buffer);

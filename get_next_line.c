@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 10:18:24 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:17:28 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	check_errors(int fd, char **remainder)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!*remainder)
-		*remainder = ft_strdup("");
+		*remainder = allocate_string(0);
 	return (1);
 }
 
@@ -34,13 +34,11 @@ static int	read_update_remainder(int fd, char **remainder)
 	while (!ft_strchr(*remainder, '\n'))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
+		if (bytes_read <= 0)
 		{
 			free(buffer);
-			return (-1);
+			return (0);
 		}
-		if (bytes_read == 0)
-			break ;
 		buffer[bytes_read] = '\0';
 		temp = *remainder;
 		*remainder = ft_strjoin(*remainder, buffer);
@@ -74,7 +72,7 @@ static char	*extract_line(char **remainder)
 	}
 	else
 	{
-		line = ft_strdup(*remainder);
+		line = *remainder;
 		free(*remainder);
 		*remainder = NULL;
 	}
