@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 11:17:28 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:22:10 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,25 @@ static int	read_update_remainder(int fd, char **remainder)
 	return (bytes_read);
 }
 
+static void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
+	char	*d;
+	char	*s;
+
+	if (!dst && !src)
+		return (NULL);
+	d = (char *)dst;
+	s = (char *)src;
+	i = 0;
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dst);
+}
+
 static char	*extract_line(char **remainder)
 {
 	char	*newline_pos;
@@ -72,7 +91,10 @@ static char	*extract_line(char **remainder)
 	}
 	else
 	{
-		line = *remainder;
+		line = allocate_string(ft_strlen(*remainder));
+		if (!line)
+			return (NULL);
+		ft_memcpy(line, *remainder, ft_strlen(*remainder));
 		free(*remainder);
 		*remainder = NULL;
 	}
