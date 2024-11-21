@@ -11,31 +11,33 @@ The function must be written in C. It must compile with clang and the following 
 - [x] -Wextra
 - [x] -Werror
 
-lseek(), global variables and your libft are forbidden.
+*lseek(), global variables and your libft are forbidden.*
 
-## ➡️ **Difference with the original printf**
-> Don't implement the buffer management of the original printf
+## ➡️ **Specifications**
+> Try to read as little as possible each time get_next_line() is called. If you encounter a new line, you have to return the current line. Don’t read the whole file and then process each line.
 
-We have to handle the following conversions: cspdiuxX% for our mandatory part.
+We have to return each line read in the fd including the terminating `\n` character, except if we reached the end of the file.
+
+## 🗂️ **Files to turn in**
+- **get_next_line.c** will contain our main function `char *get_next_line(int fd);`.
+- **get_next_line.h** will contain *at least* the prototype of our main function. And the prototypes of our other functions.
+- **get_next_line_utils.c** will contain other functions to help us achieve our goal.
 
 ## 📍 **Bonus**
 What to do for the bonus part:
-> - Manage any combination of the following flags: ’-0.’ and the field minimum width under all conversions.
-> - Manage all the following flags: ’# +’ (Yes, one of them is a space)
+> - Develop `get_next_line()` using only one static variable.
+> - Your `get_next_line()` can manage multiple file descriptors at the same time.
 
-I started to do the bonus when my madatory part worked perfectly which is a **BIG** mistake. As stated in the subject :
-> If you plan to complete the bonus part, think about the implementation of your extra features from the start. This way, you will avoid the pitfalls of a naive approach.
+The bonuses were quite easy to do. I knew I wanted to do it when I started this project so I implemented only one static variable from the start.
+As for the other bonus, it is also easy to set up.
 
-Doing the bonus meant re-doing all my functions so I gave up.
-You can still see part of my code for the bonus, it can give you hints on how to do it. Just check `ft_check_flags_bonus.c`.
+*You can compare my `get_next_line.c` code with my `get_next_line_bonus.c` code to try and see how I did* 😉
 
 ## 🧠 **New notions**
-If you have trouble understanding the subject fully and the new notions like `file descriptors` or `read` I highly recommand these:
+If you have trouble understanding the subject fully and the new notions like `file descriptors` or the function `read` I highly recommand these:
 
 - https://42-cursus.gitbook.io/guide/rank-01/get_next_line
 - https://www.youtube.com/watch?v=xgDSXNOHTIA
-
-It really helped me understand the subject better.
 
 ## ♻️ **Testing**
 I strongly recommand you do your own main function to test your program. *You can check mine to see what it should look like.*
@@ -43,7 +45,7 @@ I strongly recommand you do your own main function to test your program. *You ca
 Once you have your main, test it with this command line:
 > cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main.c -o *executable_name*
 
-Like explicited in the subject, test your functions with different BUFFER_SIZE, for example **0**, **42**, **9999** and **10000000**.
+Like specified in the subject, test your functions with different BUFFER_SIZE, for example **0**, **42**, **9999** and **10000000**.
 Test it on different files, you can take the ones I created or create your own!
 
 If you want to make sure your program works, you can use third party testers like:
