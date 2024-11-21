@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 16:22:10 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:31:29 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,17 @@ static void	*ft_memcpy(void *dst, const void *src, size_t n)
 	if (!dst && !src)
 		return (NULL);
 	d = (char *)dst;
-	s = (char *)src;
+	s = (const char *)src;
 	i = 0;
 	while (i < n)
 	{
 		d[i] = s[i];
 		i++;
 	}
+	if (i < n + 1)
+		d[i] = '\0';
+	/*free(*src);
+	*src = NULL;*/
 	return (dst);
 }
 
