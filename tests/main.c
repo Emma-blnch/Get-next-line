@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 14:18:31 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/19 14:18:50 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/22 09:55:37 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	main(int argc, char **argv)
 	}
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		printf("Line : %s", line);
+		printf("-----------------Line : %s", line);
 		free(line);
 	}
 	close(fd);

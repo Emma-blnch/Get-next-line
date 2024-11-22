@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 09:03:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/22 09:16:45 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:21:10 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	read_update_remainder(int fd, char **remainder)
 	char	*temp;
 	int		bytes_read;
 
+	bytes_read = 0;
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (-1);
