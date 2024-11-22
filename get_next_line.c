@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 16:31:29 by eblancha         ###   ########.fr       */
+/*   Created: 2024/11/22 09:03:47 by eblancha          #+#    #+#             */
+/*   Updated: 2024/11/22 09:16:45 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int	read_update_remainder(int fd, char **remainder)
 	char	*temp;
 	int		bytes_read;
 
-	bytes_read = 0;
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (-1);
@@ -35,70 +34,58 @@ static int	read_update_remainder(int fd, char **remainder)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read <= 0)
-		{
-			free(buffer);
-			return (0);
-		}
+			break ;
 		buffer[bytes_read] = '\0';
 		temp = *remainder;
 		*remainder = ft_strjoin(*remainder, buffer);
 		free(temp);
 		if (!*remainder)
-			return (-1);
+		{
+			bytes_read = -1;
+			break ;
+		}
 	}
 	free(buffer);
 	return (bytes_read);
 }
 
-static void	*ft_memcpy(void *dst, const void *src, size_t n)
+static char	*update_remainder(char **remainder, char *newline_pos)
 {
-	size_t	i;
-	char	*d;
-	char	*s;
+	char	*temp;
+	char	*new_remainder;
 
-	if (!dst && !src)
-		return (NULL);
-	d = (char *)dst;
-	s = (const char *)src;
-	i = 0;
-	while (i < n)
+	temp = *remainder;
+	if (newline_pos)
 	{
-		d[i] = s[i];
-		i++;
+		new_remainder = allocate_string(ft_strlen(newline_pos + 1));
+		if (new_remainder)
+			ft_strlcpy(new_remainder, newline_pos + 1,
+				ft_strlen(newline_pos + 1) + 1);
 	}
-	if (i < n + 1)
-		d[i] = '\0';
-	/*free(*src);
-	*src = NULL;*/
-	return (dst);
+	else
+		new_remainder = NULL;
+	free(temp);
+	return (new_remainder);
 }
 
 static char	*extract_line(char **remainder)
 {
 	char	*newline_pos;
 	char	*line;
-	char	*temp;
+	size_t	len;
 
 	newline_pos = ft_strchr(*remainder, '\n');
 	if (newline_pos)
-	{
-		line = ft_substr(*remainder, 0, newline_pos - *remainder + 1);
-		temp = *remainder;
-		*remainder = ft_substr(*remainder, newline_pos - *remainder + 1,
-				ft_strlen(*remainder));
-		free(temp);
-		if (**remainder == '\0')
-		{
-			free(*remainder);
-			*remainder = NULL;
-		}
-	}
+		len = newline_pos - *remainder + 1;
 	else
+		len = ft_strlen(*remainder);
+	line = allocate_string(len);
+	if (!line)
+		return (NULL);
+	ft_strlcpy(line, *remainder, len + 1);
+	*remainder = update_remainder(remainder, newline_pos);
+	if (!*remainder || **remainder == '\0')
 	{
-		line = allocate_string(ft_strlen(*remainder));
-		if (!line)
-			return (NULL);
-		ft_memcpy(line, *remainder, ft_strlen(*remainder));
 		free(*remainder);
 		*remainder = NULL;
 	}
