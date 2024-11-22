@@ -31,7 +31,7 @@ What to do for the bonus part:
 The bonuses were quite easy to do. I knew I wanted to do it when I started this project so I implemented only one static variable from the start.
 As for the other bonus, it is also easy to set up.
 
-*You can compare my `get_next_line.c` code with my `get_next_line_bonus.c` code to try and see how I did* 😉
+*You can compare my `get_next_line.c` code with my `get_next_line_bonus.c` code to try and understand what I did* 😉
 
 ## 🦕 **My logic**
 If you want to understand my code or just see my logic step by step you can check my `get_next_line_commented.c` in the 📁 "commented".
