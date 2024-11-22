@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 11:16:19 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:43:03 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,29 +50,43 @@ static int	read_update_remainder(int fd, char **remainder)
 	return (bytes_read);
 }
 
+static char	*update_remainder(int fd, char **remainder, char *newline_pos)
+{
+	char	*temp;
+	char	*new_remainder;
+
+	temp = remainder[fd];
+	if (newline_pos)
+	{
+		new_remainder = allocate_string(ft_strlen(newline_pos + 1));
+		if (new_remainder)
+			ft_strlcpy(new_remainder, newline_pos + 1,
+				ft_strlen(newline_pos + 1) + 1);
+	}
+	else
+		new_remainder = NULL;
+	free(temp);
+	return (new_remainder);
+}
+
 static char	*extract_line(int fd, char **remainder)
 {
 	char	*newline_pos;
 	char	*line;
-	char	*temp;
+	size_t	len;
 
 	newline_pos = ft_strchr(remainder[fd], '\n');
 	if (newline_pos)
-	{
-		line = ft_substr(remainder[fd], 0, newline_pos - remainder[fd] + 1);
-		temp = remainder[fd];
-		remainder[fd] = ft_substr(remainder[fd],
-				newline_pos - remainder[fd] + 1, ft_strlen(remainder[fd]));
-		free(temp);
-		if (*remainder[fd] == '\0')
-		{
-			free(remainder[fd]);
-			remainder[fd] = NULL;
-		}
-	}
+		len = newline_pos - remainder[fd] + 1;
 	else
+		len = ft_strlen(remainder[fd]);
+	line = allocate_string(len);
+	if (!line)
+		return (NULL);
+	ft_strlcpy(line, remainder[fd], len + 1);
+	remainder[fd] = update_remainder(fd, remainder, newline_pos);
+	if (!remainder[fd] || *remainder[fd] == '\0')
 	{
-		line = ft_strdup(remainder[fd]);
 		free(remainder[fd]);
 		remainder[fd] = NULL;
 	}

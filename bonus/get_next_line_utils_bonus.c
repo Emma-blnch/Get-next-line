@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 10:57:43 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/21 10:57:46 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/22 10:38:21 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-static char	*allocate_string(size_t size)
+char	*allocate_string(size_t size)
 {
 	char	*result;
 
@@ -62,30 +62,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-char	*ft_substr(char *s, unsigned int start, size_t len)
-{
-	char	*pointer;
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	if (start >= ft_strlen(s))
-		return (allocate_string(0));
-	if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	pointer = malloc(sizeof(char) * len + 1);
-	if (!pointer)
-		return (NULL);
-	while (i < len && s[start + i])
-	{
-		pointer[i] = s[start + i];
-		i++;
-	}
-	pointer[i] = '\0';
-	return (pointer);
-}
-
 char	*ft_strchr(const char *s, int c)
 {
 	int	i;
@@ -102,4 +78,23 @@ char	*ft_strchr(const char *s, int c)
 	if (s[i] == (char)c)
 		return ((char *)(s + i));
 	return (NULL);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+{
+	size_t	i;
+
+	if (!src)
+		return (0);
+	i = 0;
+	if (dstsize > 0)
+	{
+		while (src[i] && i < dstsize - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	return (ft_strlen((char *)src));
 }
