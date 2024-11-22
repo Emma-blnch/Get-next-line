@@ -11,7 +11,7 @@ The function must be written in C. It must compile with clang and the following 
 - [x] -Wextra
 - [x] -Werror
 
-*lseek(), global variables and your libft are forbidden.*
+⛔ *lseek(), global variables and your libft are forbidden.*
 
 ## ➡️ **Specifications**
 > Try to read as little as possible each time get_next_line() is called. If you encounter a new line, you have to return the current line. Don’t read the whole file and then process each line.
