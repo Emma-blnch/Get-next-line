@@ -11,7 +11,7 @@ The function must be written in C. It must compile with clang and the following 
 - [x] -Wextra
 - [x] -Werror
 
-*lseek(), global variables and your libft are forbidden.*
+⛔ *lseek(), global variables and your libft are forbidden.*
 
 ## ➡️ **Specifications**
 > Try to read as little as possible each time get_next_line() is called. If you encounter a new line, you have to return the current line. Don’t read the whole file and then process each line.
@@ -31,10 +31,10 @@ What to do for the bonus part:
 The bonuses were quite easy to do. I knew I wanted to do it when I started this project so I implemented only one static variable from the start.
 As for the other bonus, it is also easy to set up.
 
-*You can compare my `get_next_line.c` code with my `get_next_line_bonus.c` code to try and see how I did* 😉
+*You can compare my `get_next_line.c` code with my `get_next_line_bonus.c` code to try and understand what I did* 😉
 
 ## 🦕 **My logic**
-If you want to understand my code or just see my logic step by step you can check my `get_next_line_commented.c` in the 📁 "commented".
+If you want to understand my code or just see my logic step by step you can check my `get_next_line_commented.c` in the 📁 *commented*.
 
 ## 🧠 **New notions**
 If you have trouble understanding the subject fully and the new notions like `file descriptors` or the function `read` I highly recommand these:
