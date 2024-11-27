@@ -85,11 +85,11 @@ static char	*extract_line(char **storedLines)
 		return (NULL);
 	ft_strlcpy(line, *storedLines, length + 1);
 	*storedLines = update_storedLines(storedLines, newlinePosition);
-	if (!*storedLines || **storedLines == '\0')
+	/*if (!*storedLines || **storedLines == '\0')
 	{
 		free(*storedLines);
 		*storedLines = NULL;
-	}
+	}*/
 	return (line);
 }
 
