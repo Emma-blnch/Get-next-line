@@ -31,12 +31,12 @@ static int	read_and_store_lines(int fd, char **stored_lines)
 	current_read_chunk = malloc(BUFFER_SIZE + 1);
 	if (!current_read_chunk)
 		return (-1);
-	while (!ft_strchr(stored_liens[fd], '\n'))
+	while (!ft_strchr(stored_lines[fd], '\n'))
 	{
 		bytes_read = read(fd, current_read_chunk, BUFFER_SIZE);
 		if (bytes_read <= 0)
 		{
-			free(buffer);
+			free(current_read_chunk);
 			return (0);
 		}
 		current_read_chunk[bytes_read] = '\0';
@@ -84,7 +84,7 @@ static char	*extract_line(int fd, char **stored_lines)
 	if (!line)
 		return (NULL);
 	ft_strlcpy(line, stored_lines[fd], length + 1);
-	stored_lines[fd] = update_remainder(fd, stored_lines, newline_position);
+	stored_lines[fd] = update_stored_lines(fd, stored_lines, newline_position);
 	return (line);
 }
 
