@@ -6,7 +6,7 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/22 10:43:03 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/27 12:08:19 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,18 @@ static int	read_and_store_lines(int fd, char **stored_lines)
 	return (bytes_read);
 }
 
-static char	*update_stored_lines(int fd, char **stored_lines, char *newline_position)
+static char	*update_stored_lines(int fd, char **stored_lines, char *newline_pos)
 {
 	char	*temporary;
 	char	*new_stored_lines;
 
 	temporary = stored_lines[fd];
-	if (newline_position)
+	if (newline_pos)
 	{
-		new_stored_lines = allocate_string(ft_strlen(newline_position+ 1));
+		new_stored_lines = allocate_string(ft_strlen(newline_pos + 1));
 		if (new_stored_lines)
-			ft_strlcpy(new_stored_lines, newline_position + 1,
-				ft_strlen(newline_position + 1) + 1);
+			ft_strlcpy(new_stored_lines, newline_pos + 1,
+				ft_strlen(newline_pos + 1) + 1);
 	}
 	else
 		new_stored_lines = NULL;
