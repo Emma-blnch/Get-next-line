@@ -12,16 +12,16 @@
 
 #include "get_next_line_bonus.h"
 
-size_t	ft_strlen(char *s)
+size_t	ft_strlen(char *string)
 {
-	int	i;
+	int	index;
 
-	if (!s)
+	if (!string)
 		return (0);
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	index = 0;
+	while (string[index])
+		index++;
+	return (index);
 }
 
 char	*allocate_string(size_t size)
@@ -37,39 +37,39 @@ char	*allocate_string(size_t size)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	size_t	i;
-	size_t	j;
+	size_t	s1_len;
+	size_t	s2_len;
 	char	*result;
 
 	if (!s1 && !s2)
 		return (allocate_string(0));
-	i = 0;
-	j = 0;
+	s1_len = 0;
+	s2_len = 0;
 	result = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!result)
 		return (NULL);
-	while (s1[i])
+	while (s1[s1_len])
 	{
-		result[i] = s1[i];
-		i++;
+		result[s1_len] = s1[s1_len];
+		s1_len++;
 	}
-	while (s2[j])
+	while (s2[s2_len])
 	{
-		result[i + j] = s2[j];
-		j++;
+		result[s1_len + s2_len] = s2[s2_len];
+		s2_len++;
 	}
-	result[i + j] = '\0';
+	result[s1_len + s2_len] = '\0';
 	return (result);
 }
 
-char	*ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *string, int character)
 {
-	int	i;
+	int	index;
 
-	if (!s)
+	if (!string)
 		return (NULL);
-	i = 0;
-	while (s[i])
+	index = 0;
+	while (string[index])
 	{
 		if (s[i] == (char)c)
 			return ((char *)(s + i));
