@@ -71,30 +71,30 @@ char	*ft_strchr(const char *string, int character)
 	index = 0;
 	while (string[index])
 	{
-		if (s[i] == (char)c)
-			return ((char *)(s + i));
-		i++;
+		if (string[index] == (char)character)
+			return ((char *)(string + index));
+		index++;
 	}
-	if (s[i] == (char)c)
-		return ((char *)(s + i));
+	if (string[index] == (char)character)
+		return ((char *)(string + index));
 	return (NULL);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dest, const char *source, size_t dest_size)
 {
-	size_t	i;
+	size_t	index;
 
-	if (!src)
+	if (!source)
 		return (0);
-	i = 0;
-	if (dstsize > 0)
+	index = 0;
+	if (dest_size > 0)
 	{
-		while (src[i] && i < dstsize - 1)
+		while (source[index] && index < dest_size - 1)
 		{
-			dst[i] = src[i];
-			i++;
+			dest[index] = source[index];
+			index++;
 		}
-		dst[i] = '\0';
+		dest[index] = '\0';
 	}
-	return (ft_strlen((char *)src));
+	return (ft_strlen((char *)source));
 }
