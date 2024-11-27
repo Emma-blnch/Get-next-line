@@ -35,16 +35,16 @@ static int	read_and_store_lines(int fd, char **stored_lines)
 	{
 		bytes_read = read(fd, current_read_chunk, BUFFER_SIZE);
 		if (bytes_read <= 0)
-		{
-			free(current_read_chunk);
-			return (0);
-		}
+			break ;
 		current_read_chunk[bytes_read] = '\0';
 		temporary = stored_lines[fd];
 		stored_lines[fd] = ft_strjoin(stored_lines[fd], current_read_chunk);
 		free(temporary);
 		if (!stored_lines[fd])
+		{
+			free(current_read_chunk);
 			return (-1);
+		}
 	}
 	free(current_read_chunk);
 	return (bytes_read);
