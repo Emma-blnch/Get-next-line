@@ -6,114 +6,109 @@
 /*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 09:03:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/22 10:21:10 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/11/27 10:36:50 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static int	check_errors(int fd, char **storedLines)
+static int	check_errors(int fd, char **stored_lines)
 {
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	if (!*storedLines)
-		*storedLines = allocate_string(0);
+	if (!*stored_lines)
+		*stored_lines = allocate_string(0);
 	return (1);
 }
 
-static int	read_and_store_lines(int fd, char **storedLines)
+static int	read_and_store_lines(int fd, char **stored_lines)
 {
-	char	*currentReadChunk;
+	char	*current_read_chunk;
 	char	*temporary;
-	int		bytesRead;
+	int		bytes_read;
 
-	bytesRead = 0;
-	currentReadChunk = malloc(BUFFER_SIZE + 1);
-	if (!currentReadChunk)
+	bytes_read = 0;
+	current_read_chunk = malloc(BUFFER_SIZE + 1);
+	if (!current_read_chunk)
 		return (-1);
-	while (!ft_strchr(*storedLines, '\n'))
+	while (!ft_strchr(*stored_lines, '\n'))
 	{
-		bytesRead = read(fd, currentReadChunk, BUFFER_SIZE);
-		if (bytesRead <= 0)
+		bytes_read = read(fd, current_read_chunk, BUFFER_SIZE);
+		if (bytes_read <= 0)
 			break ;
-		currentReadChunk[bytesRead] = '\0';
-		temporary = *storedLines;
-		*storedLines = ft_strjoin(*storedLines, currentReadChunk);
+		current_read_chunk[bytes_read] = '\0';
+		temporary = *stored_lines;
+		*stored_lines = ft_strjoin(*stored_lines, current_read_chunk);
 		free(temporary);
-		if (!*storedLines)
+		if (!*stored_lines)
 		{
-			bytesRead = -1;
+			bytes_read = -1;
 			break ;
 		}
 	}
-	free(currentReadChunk);
-	return (bytesRead);
+	free(current_read_chunk);
+	return (bytes_read);
 }
 
-static char	*update_storedLines(char **storedLines, char *newlinePosition)
+static char	*update_stored_lines(char **stored_lines, char *newline_position)
 {
 	char	*temporary;
-	char	*new_storedLines;
+	char	*new_stored_lines;
 
-	temporary = *storedLines;
-	if (newlinePosition)
+	temporary = *stored_lines;
+	if (newline_position)
 	{
-		new_storedLines = allocate_string(ft_strlen(newlinePosition + 1));
-		if (new_storedLines)
-			ft_strlcpy(new_storedLines, newlinePosition + 1,
-				ft_strlen(newlinePosition + 1) + 1);
+		new_stored_lines = allocate_string(ft_strlen(newline_position + 1));
+		if (new_stored_lines)
+			ft_strlcpy(new_stored_lines, newline_position + 1,
+				ft_strlen(newline_position + 1) + 1);
 	}
 	else
-		new_storedLines = NULL;
+		new_stored_lines = NULL;
 	free(temporary);
-	return (new_storedLines);
+	return (new_stored_lines);
 }
 
-static char	*extract_line(char **storedLines)
+static char	*extract_line(char **stored_lines)
 {
-	char	*newlinePosition;
+	char	*newline_position;
 	char	*line;
 	size_t	length;
 
-	newlinePosition = ft_strchr(*storedLines, '\n');
-	if (newlinePosition)
-		length = newlinePosition - *storedLines + 1;
+	newline_position = ft_strchr(*stored_lines, '\n');
+	if (newline_position)
+		length = newline_position - *stored_lines + 1;
 	else
-		length = ft_strlen(*storedLines);
+		length = ft_strlen(*stored_lines);
 	line = allocate_string(length);
 	if (!line)
 		return (NULL);
-	ft_strlcpy(line, *storedLines, length + 1);
-	*storedLines = update_storedLines(storedLines, newlinePosition);
-	/*if (!*storedLines || **storedLines == '\0')
-	{
-		free(*storedLines);
-		*storedLines = NULL;
-	}*/
+	ft_strlcpy(line, *stored_lines, length + 1);
+	*stored_lines = update_stored_lines(stored_lines, newline_position);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*storedLines;
+	static char	*stored_lines;
 	char		*line;
-	int			bytesRead;
+	int			bytes_read;
 
-	if (check_errors(fd, &storedLines) != 1)
+	if (check_errors(fd, &stored_lines) != 1)
 		return (NULL);
-	bytesRead = read_and_store_lines(fd, &storedLines);
-	if (bytesRead == -1)
+	bytes_read = read_and_store_lines(fd, &stored_lines);
+	if (bytes_read == -1)
 	{
-		free(storedLines);
-		storedLines = NULL;
+		free(stored_lines);
+		stored_lines = NULL;
 		return (NULL);
 	}
-	if (bytesRead == 0 && (!storedLines || *storedLines == '\0'))
+	if (bytes_read == 0 && (!stored_lines || *stored_lines == '\0'))
 	{
-		free(storedLines);
-		storedLines = NULL;
+		free(stored_lines);
+		stored_lines = NULL;
 		return (NULL);
 	}
-	line = extract_line(&storedLines);
+	line = extract_line(&stored_lines);
 	return (line);
 }
