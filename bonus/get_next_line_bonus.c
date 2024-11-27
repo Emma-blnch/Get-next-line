@@ -12,108 +12,103 @@
 
 #include "get_next_line_bonus.h"
 
-static int	check_errors(int fd, char **remainder)
+static int	check_errors(int fd, char **stored_lines)
 {
 	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (0);
-	if (!remainder[fd])
-		remainder[fd] = allocate_string(0);
+	if (!stored_lines[fd])
+		stored_lines[fd] = allocate_string(0);
 	return (1);
 }
 
-static int	read_update_remainder(int fd, char **remainder)
+static int	read_and_store_lines(int fd, char **stored_lines)
 {
-	char	*buffer;
-	char	*temp;
+	char	*current_read_chunk;
+	char	*temporary;
 	int		bytes_read;
 
 	bytes_read = 0;
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
+	current_read_chunk = malloc(BUFFER_SIZE + 1);
+	if (!current_read_chunk)
 		return (-1);
-	while (!ft_strchr(remainder[fd], '\n'))
+	while (!ft_strchr(stored_liens[fd], '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, current_read_chunk, BUFFER_SIZE);
 		if (bytes_read <= 0)
 		{
 			free(buffer);
 			return (0);
 		}
-		buffer[bytes_read] = '\0';
-		temp = remainder[fd];
-		remainder[fd] = ft_strjoin(remainder[fd], buffer);
-		free(temp);
-		if (!remainder[fd])
+		current_read_chunk[bytes_read] = '\0';
+		temporary = stored_lines[fd];
+		stored_lines[fd] = ft_strjoin(stored_lines[fd], current_read_chunk);
+		free(temporary);
+		if (!stored_lines[fd])
 			return (-1);
 	}
-	free(buffer);
+	free(current_read_chunk);
 	return (bytes_read);
 }
 
-static char	*update_remainder(int fd, char **remainder, char *newline_pos)
+static char	*update_stored_lines(int fd, char **stored_lines, char *newline_position)
 {
-	char	*temp;
-	char	*new_remainder;
+	char	*temporary;
+	char	*new_stored_lines;
 
-	temp = remainder[fd];
-	if (newline_pos)
+	temporary = stored_lines[fd];
+	if (newline_position)
 	{
-		new_remainder = allocate_string(ft_strlen(newline_pos + 1));
-		if (new_remainder)
-			ft_strlcpy(new_remainder, newline_pos + 1,
-				ft_strlen(newline_pos + 1) + 1);
+		new_stored_lines = allocate_string(ft_strlen(newline_position+ 1));
+		if (new_stored_lines)
+			ft_strlcpy(new_stored_lines, newline_position + 1,
+				ft_strlen(newline_position + 1) + 1);
 	}
 	else
-		new_remainder = NULL;
-	free(temp);
-	return (new_remainder);
+		new_stored_lines = NULL;
+	free(temporary);
+	return (new_stored_lines);
 }
 
-static char	*extract_line(int fd, char **remainder)
+static char	*extract_line(int fd, char **stored_lines)
 {
-	char	*newline_pos;
+	char	*newline_position;
 	char	*line;
-	size_t	len;
+	size_t	length;
 
-	newline_pos = ft_strchr(remainder[fd], '\n');
-	if (newline_pos)
-		len = newline_pos - remainder[fd] + 1;
+	newline_position = ft_strchr(stored_lines[fd], '\n');
+	if (newline_position)
+		length = newline_position - stored_lines[fd] + 1;
 	else
-		len = ft_strlen(remainder[fd]);
-	line = allocate_string(len);
+		length = ft_strlen(stored_lines[fd]);
+	line = allocate_string(length);
 	if (!line)
 		return (NULL);
-	ft_strlcpy(line, remainder[fd], len + 1);
-	remainder[fd] = update_remainder(fd, remainder, newline_pos);
-	if (!remainder[fd] || *remainder[fd] == '\0')
-	{
-		free(remainder[fd]);
-		remainder[fd] = NULL;
-	}
+	ft_strlcpy(line, stored_lines[fd], length + 1);
+	stored_lines[fd] = update_remainder(fd, stored_lines, newline_position);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder[1024];
+	static char	*stored_lines[1024];
 	char		*line;
 	int			bytes_read;
 
-	if (check_errors(fd, remainder) != 1)
+	if (check_errors(fd, stored_lines) != 1)
 		return (NULL);
-	bytes_read = read_update_remainder(fd, remainder);
+	bytes_read = read_and_store_lines(fd, stored_lines);
 	if (bytes_read == -1)
 	{
-		free(remainder[fd]);
-		remainder[fd] = NULL;
+		free(stored_lines[fd]);
+		stored_lines[fd] = NULL;
 		return (NULL);
 	}
-	if (bytes_read == 0 && (!remainder[fd] || *remainder[fd] == '\0'))
+	if (bytes_read == 0 && (!stored_lines[fd] || *stored_lines[fd] == '\0'))
 	{
-		free(remainder[fd]);
-		remainder[fd] = NULL;
+		free(stored_lines[fd]);
+		stored_lines[fd] = NULL;
 		return (NULL);
 	}
-	line = extract_line(fd, remainder);
+	line = extract_line(fd, stored_lines);
 	return (line);
 }
