@@ -12,108 +12,108 @@
 
 #include "get_next_line.h"
 
-static int	check_errors(int fd, char **remainder)
+static int	check_errors(int fd, char **storedLines)
 {
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	if (!*remainder)
-		*remainder = allocate_string(0);
+	if (!*storedLines)
+		*storedLines = allocate_string(0);
 	return (1);
 }
 
-static int	read_update_remainder(int fd, char **remainder)
+static int	read_and_store_lines(int fd, char **storedLines)
 {
-	char	*buffer;
-	char	*temp;
-	int		bytes_read;
+	char	*currentReadChunk;
+	char	*temporary;
+	int		bytesRead;
 
-	bytes_read = 0;
-	buffer = malloc(BUFFER_SIZE + 1);
-	if (!buffer)
+	bytesRead = 0;
+	currentReadChunk = malloc(BUFFER_SIZE + 1);
+	if (!currentReadChunk)
 		return (-1);
-	while (!ft_strchr(*remainder, '\n'))
+	while (!ft_strchr(*storedLines, '\n'))
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read <= 0)
+		bytesRead = read(fd, currentReadChunk, BUFFER_SIZE);
+		if (bytesRead <= 0)
 			break ;
-		buffer[bytes_read] = '\0';
-		temp = *remainder;
-		*remainder = ft_strjoin(*remainder, buffer);
-		free(temp);
-		if (!*remainder)
+		currentReadChunk[bytesRead] = '\0';
+		temporary = *storedLines;
+		*storedLines = ft_strjoin(*storedLines, currentReadChunk);
+		free(temporary);
+		if (!*storedLines)
 		{
-			bytes_read = -1;
+			bytesRead = -1;
 			break ;
 		}
 	}
-	free(buffer);
-	return (bytes_read);
+	free(currentReadChunk);
+	return (bytesRead);
 }
 
-static char	*update_remainder(char **remainder, char *newline_pos)
+static char	*update_storedLines(char **storedLines, char *newlinePosition)
 {
-	char	*temp;
-	char	*new_remainder;
+	char	*temporary;
+	char	*new_storedLines;
 
-	temp = *remainder;
-	if (newline_pos)
+	temporary = *storedLines;
+	if (newlinePosition)
 	{
-		new_remainder = allocate_string(ft_strlen(newline_pos + 1));
-		if (new_remainder)
-			ft_strlcpy(new_remainder, newline_pos + 1,
-				ft_strlen(newline_pos + 1) + 1);
+		new_storedLines = allocate_string(ft_strlen(newlinePosition + 1));
+		if (new_storedLines)
+			ft_strlcpy(new_storedLines, newlinePosition + 1,
+				ft_strlen(newlinePosition + 1) + 1);
 	}
 	else
-		new_remainder = NULL;
-	free(temp);
-	return (new_remainder);
+		new_storedLines = NULL;
+	free(temporary);
+	return (new_storedLines);
 }
 
-static char	*extract_line(char **remainder)
+static char	*extract_line(char **storedLines)
 {
-	char	*newline_pos;
+	char	*newlinePosition;
 	char	*line;
-	size_t	len;
+	size_t	length;
 
-	newline_pos = ft_strchr(*remainder, '\n');
-	if (newline_pos)
-		len = newline_pos - *remainder + 1;
+	newlinePosition = ft_strchr(*storedLines, '\n');
+	if (newlinePosition)
+		length = newlinePosition - *storedLines + 1;
 	else
-		len = ft_strlen(*remainder);
-	line = allocate_string(len);
+		length = ft_strlen(*storedLines);
+	line = allocate_string(length);
 	if (!line)
 		return (NULL);
-	ft_strlcpy(line, *remainder, len + 1);
-	*remainder = update_remainder(remainder, newline_pos);
-	if (!*remainder || **remainder == '\0')
+	ft_strlcpy(line, *storedLines, length + 1);
+	*storedLines = update_storedLines(storedLines, newlinePosition);
+	if (!*storedLines || **storedLines == '\0')
 	{
-		free(*remainder);
-		*remainder = NULL;
+		free(*storedLines);
+		*storedLines = NULL;
 	}
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*remainder;
+	static char	*storedLines;
 	char		*line;
-	int			bytes_read;
+	int			bytesRead;
 
-	if (check_errors(fd, &remainder) != 1)
+	if (check_errors(fd, &storedLines) != 1)
 		return (NULL);
-	bytes_read = read_update_remainder(fd, &remainder);
-	if (bytes_read == -1)
+	bytesRead = read_and_store_lines(fd, &storedLines);
+	if (bytesRead == -1)
 	{
-		free(remainder);
-		remainder = NULL;
+		free(storedLines);
+		storedLines = NULL;
 		return (NULL);
 	}
-	if (bytes_read == 0 && (!remainder || *remainder == '\0'))
+	if (bytesRead == 0 && (!storedLines || *storedLines == '\0'))
 	{
-		free(remainder);
-		remainder = NULL;
+		free(storedLines);
+		storedLines = NULL;
 		return (NULL);
 	}
-	line = extract_line(&remainder);
+	line = extract_line(&storedLines);
 	return (line);
 }
