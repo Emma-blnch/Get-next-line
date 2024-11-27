@@ -5,6 +5,9 @@
 
 This project is about coding a function that returns a line read from a file descriptor.
 
+## 📥 **What I learned**
+With this project, I learned how to separate my code into <ins>subfunctions</ins> so everything is **clear** and each function has **one role** and **one purpose**.
+
 ## ⚙️ **Requirements**
 The function must be written in C. It must compile with clang and the following flags :
 - [x] -Wall
