@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eblancha <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eblancha <eblancha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:51:47 by eblancha          #+#    #+#             */
-/*   Updated: 2024/11/27 12:08:19 by eblancha         ###   ########.fr       */
+/*   Updated: 2024/12/03 09:44:07 by eblancha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,19 @@ static int	read_and_store_lines(int fd, char **stored_lines)
 
 static char	*update_stored_lines(int fd, char **stored_lines, char *newline_pos)
 {
-	char	*temporary;
 	char	*new_stored_lines;
+	size_t	length;
 
-	temporary = stored_lines[fd];
 	if (newline_pos)
 	{
-		new_stored_lines = allocate_string(ft_strlen(newline_pos + 1));
+		length = ft_strlen(newline_pos +1);
+		new_stored_lines = allocate_string(length);
 		if (new_stored_lines)
-			ft_strlcpy(new_stored_lines, newline_pos + 1,
-				ft_strlen(newline_pos + 1) + 1);
+			ft_strlcpy(new_stored_lines, newline_pos + 1, length + 1);
 	}
 	else
 		new_stored_lines = NULL;
-	free(temporary);
+	free(stored_lines[fd]);
 	return (new_stored_lines);
 }
 
@@ -97,13 +96,8 @@ char	*get_next_line(int fd)
 	if (check_errors(fd, stored_lines) != 1)
 		return (NULL);
 	bytes_read = read_and_store_lines(fd, stored_lines);
-	if (bytes_read == -1)
-	{
-		free(stored_lines[fd]);
-		stored_lines[fd] = NULL;
-		return (NULL);
-	}
-	if (bytes_read == 0 && (!stored_lines[fd] || *stored_lines[fd] == '\0'))
+	if (bytes_read == -1 || (bytes_read == 0
+			&& (!stored_lines[fd] || *stored_lines[fd] == '\0')))
 	{
 		free(stored_lines[fd]);
 		stored_lines[fd] = NULL;
