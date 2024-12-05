@@ -14,7 +14,7 @@
 
 static int	check_errors(int fd, char **stored_lines)
 {
-	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!stored_lines[fd])
 		stored_lines[fd] = allocate_string(0);
