@@ -57,7 +57,7 @@ static char	*update_stored_lines(int fd, char **stored_lines, char *newline_pos)
 
 	if (newline_pos)
 	{
-		length = ft_strlen(newline_pos +1);
+		length = ft_strlen(newline_pos + 1);
 		new_stored_lines = allocate_string(length);
 		if (new_stored_lines)
 			ft_strlcpy(new_stored_lines, newline_pos + 1, length + 1);
