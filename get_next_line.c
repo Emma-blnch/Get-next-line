@@ -14,8 +14,6 @@
 
 static int	check_errors(int fd, char **stored_lines)
 {
-	char	temp[1];
-
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	if (!*stored_lines)
