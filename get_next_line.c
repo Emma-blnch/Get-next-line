@@ -96,8 +96,7 @@ char	*get_next_line(int fd)
 	if (check_errors(fd, &stored_lines) != 1)
 		return (NULL);
 	bytes_read = read_and_store_lines(fd, &stored_lines);
-	if (bytes_read == -1 || (bytes_read == 0
-			&& (!stored_lines || *stored_lines == '\0')))
+	if (bytes_read <= 0 && (!stored_lines || *stored_lines == '\0')))
 	{
 		free(stored_lines);
 		stored_lines = NULL;
