@@ -8,8 +8,8 @@ This project is about coding a function that returns a line read from a file des
 
 ## 📥 **What I learned**
 With this project I Implemented some of the *clean code* concepts:
-- [x] each function has a *one role*, *one purpose*
-- [x] code is *maintainable*
+- [ ] each function has a *one role*, *one purpose*
+- [ ] code is *maintainable*
 
 ## ⚙️ **Technical skills I acquired**
 - [x] Manipulating files
