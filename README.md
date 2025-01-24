@@ -1,5 +1,8 @@
 <h1 align="center"> ⏩ <strong>Get_next_line</strong> </h1>
 
+> [!IMPORTANT]
+> 3rd project of the 42 cursus.
+
 ## 🏷️ **About the project**
 > Reading a line from a fd is way too tedious
 
