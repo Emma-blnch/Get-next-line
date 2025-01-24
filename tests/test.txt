@@ -1,4 +1,0 @@
-Bonjour !
-Ceci est un fichier de test.
-Ligne par ligne.
-Fin du fichier.
